@@ -1,42 +1,32 @@
 import React, { useState } from "react";
-
-import SignIn from "../../components/SignIn";
-import SignUp from "../../components/SignUp";
-
-// react-bootstrap
-import Col from "react-bootstrap/Col";
-import Container from "react-bootstrap/Container";
-import Row from "react-bootstrap/Row";
+import { auth } from "../../firebase";
+import { useNavigate } from "react-router-dom";
 
 const Login = () => {
-  const [card, setCard] = useState({ comp: <SignUp />, title: "Sign Up" });
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const navigate = useNavigate();
+
+  const handleLogin = async (e) => {
+    e.preventDefault();
+    try {
+      await auth.signInWithEmailAndPassword(email, password);
+      navigate("/account");
+    } catch (err) {
+      alert("فشل تسجيل الدخول");
+    }
+  };
 
   return (
-    <Container>
-      <Row className='my-5 text-center'>
-        <Col lg={12}>
-          <h1>{card.title}</h1>
-        </Col>
-      </Row>
-      <Row className='text-center'>
-        <Col lg={6}>
-          <a
-            href='#'
-            onClick={() => setCard({ comp: <SignIn />, title: "Login" })}
-          >
-            Login
-          </a>{" "}
-          or{" "}
-          <a
-            href='#'
-            onClick={() => setCard({ comp: <SignUp />, title: "Sign Up" })}
-          >
-            Sign Up
-          </a>
-        </Col>
-        <Col lg={6}>{card.comp}</Col>
-      </Row>
-    </Container>
+    <div className="container mt-5">
+      <h2>تسجيل الدخول</h2>
+      <form onSubmit={handleLogin}>
+        <input type="email" value={email} onChange={(e) => setEmail(e.target.value)} placeholder="البريد الإلكتروني" className="form-control mb-3" />
+        <input type="password" value={password} onChange={(e) => setPassword(e.target.value)} placeholder="كلمة المرور" className="form-control mb-3" />
+        <button type="submit" className="btn btn-primary">دخول</button>
+      </form>
+    </div>
   );
 };
+
 export default Login;

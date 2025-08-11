@@ -1,11 +1,12 @@
-# To get started with Dependabot version updates, you'll need to specify which
-# package ecosystems to update and where the package manifests are located.
-# Please see the documentation for all configuration options:
-# https://help.github.com/github/administering-a-repository/configuration-options-for-dependency-updates
-
 version: 2
 updates:
-  - package-ecosystem: "npm" # See documentation for possible values
-    directory: "/" # Location of package manifests
+  - package-ecosystem: "npm"
+    directory: "/"       # مكان package.json
     schedule:
-      interval: "daily"
+      interval: "daily"  # التحديث يومي
+    open-pull-requests-limit: 5
+    # يمكن إضافة هذا لو عندك ملفات lock مختلفة (package-lock.json أو yarn.lock)
+    # allows auto-merge و تحديثات minor/patch
+    allow:
+      - dependency-type: "all"
+    # يمكنك إضافة المزيد من الإعدادات مثل مراجعة أمان الحزم (security updates) فقط

@@ -1,0 +1,12 @@
+version: 2
+updates:
+  - package-ecosystem: "npm"
+    directory: "/"       # مكان package.json
+    schedule:
+      interval: "daily"  # التحديث يومي
+    open-pull-requests-limit: 5
+    # يمكن إضافة هذا لو عندك ملفات lock مختلفة (package-lock.json أو yarn.lock)
+    # allows auto-merge و تحديثات minor/patch
+    allow:
+      - dependency-type: "all"
+    # يمكنك إضافة المزيد من الإعدادات مثل مراجعة أمان الحزم (security updates) فقط

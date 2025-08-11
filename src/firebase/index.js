@@ -1,21 +1,19 @@
-/* eslint-disable no-undef */
-import firebase from "firebase/app";
-import "firebase/auth";
-import "firebase/firestore";
-import "firebase/storage";
+import firebase from "firebase/compat/app";
+import "firebase/compat/auth";
+import "firebase/compat/firestore";
 
-const app = firebase.initializeApp({
-  projectId: process.env.REACT_APP_PROJECT_ID,
-  apiKey: process.env.REACT_APP_API_KEY,
-  authDomain: process.env.REACT_APP_AUTH_DOMAIN,
-  appId: process.env.REACT_APP_APP_ID,
-  storageBucket: process.env.REACT_APP_STORAGE_BUCKET,
-  messagingSenderId: process.env.REACT_APP_MESSAGING_SENDER_ID,
-  measurementId: process.env.REACT_APP_MEASUREMENT_ID,
-});
+const firebaseConfig = {
+  apiKey: "AIzaSyDv2-F4_qQF6r1HlQtc_TMW-D3NhzCeufg",
+  authDomain: "beit-tijar-llaqar3.firebaseapp.com",
+  projectId: "beit-tijar-llaqar3",
+  storageBucket: "beit-tijar-llaqar3.appspot.com",
+  messagingSenderId: "176400798254",
+  appId: "1:176400798254:web:2ef1346284a7a08ad0c5bf",
+  measurementId: "G-1E2S9FZDH4"
+};
 
-export const auth = firebase.auth();
-export const db = firebase.firestore();
-export const storage = firebase.storage();
+const firebaseApp = firebase.initializeApp(firebaseConfig);
+const auth = firebase.auth();
+const db = firebase.firestore();
 
-export default app;
+export { auth, db };
