@@ -1,43 +1,35 @@
 import React, { useState } from "react";
 import { auth } from "../../firebase";
-import { useNavigate } from "react-router-dom";
 
 const Login = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const navigate = useNavigate();
+  const [error, setError] = useState("");
 
-  const handleLogin = async (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     try {
       await auth.signInWithEmailAndPassword(email, password);
-      navigate("/account");
-    } catch (error) {
-      alert("فشل تسجيل الدخول. تحقق من بياناتك.");
+      alert("تم تسجيل الدخول");
+    } catch (err) {
+      setError(err.message);
     }
   };
 
   return (
-    <div className="container mt-5">
+    <div style={{ padding: 20 }}>
       <h2>تسجيل الدخول</h2>
-      <form onSubmit={handleLogin}>
-        <input
-          type="email"
-          placeholder="البريد الإلكتروني"
-          className="form-control mb-3"
-          value={email}
-          onChange={(e) => setEmail(e.target.value)}
-          required
-        />
-        <input
-          type="password"
-          placeholder="كلمة المرور"
-          className="form-control mb-3"
-          value={password}
-          onChange={(e) => setPassword(e.target.value)}
-          required
-        />
-        <button type="submit" className="btn btn-primary">دخول</button>
+      <form onSubmit={handleSubmit}>
+        <div>
+          <label>البريد الإلكتروني:</label><br />
+          <input type="email" value={email} onChange={e => setEmail(e.target.value)} required />
+        </div>
+        <div>
+          <label>كلمة المرور:</label><br />
+          <input type="password" value={password} onChange={e => setPassword(e.target.value)} required />
+        </div>
+        <button type="submit" style={{ marginTop: 10 }}>دخول</button>
+        {error && <p style={{ color: "red" }}>{error}</p>}
       </form>
     </div>
   );

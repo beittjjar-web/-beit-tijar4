@@ -1,45 +1,49 @@
 import React, { useState } from "react";
-import { db, storage } from "../firebase";
+import { db } from "../firebase";
 
 const AddProperty = () => {
   const [title, setTitle] = useState("");
-  const [price, setPrice] = useState("");
   const [location, setLocation] = useState("");
-  const [image, setImage] = useState(null);
+  const [price, setPrice] = useState("");
+  const [description, setDescription] = useState("");
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    if (!image) return;
-
-    const storageRef = storage.ref();
-    const imageRef = storageRef.child(`images/${image.name}`);
-    await imageRef.put(image);
-    const imageURL = await imageRef.getDownloadURL();
-
     await db.collection("properties").add({
       title,
-      price,
       location,
-      imageURL,
-      createdAt: new Date(),
+      price: Number(price),
+      description,
+      createdAt: new Date()
     });
-
+    alert("تم إضافة العقار بنجاح");
     setTitle("");
-    setPrice("");
     setLocation("");
-    setImage(null);
-    alert("تمت إضافة العقار بنجاح!");
+    setPrice("");
+    setDescription("");
   };
 
   return (
-    <div className="container mt-5">
-      <h2>إضافة عقار</h2>
+    <div style={{ padding: 20 }}>
+      <h2>إضافة عقار جديد</h2>
       <form onSubmit={handleSubmit}>
-        <input type="text" value={title} onChange={(e) => setTitle(e.target.value)} placeholder="عنوان العقار" className="form-control mb-3" required />
-        <input type="number" value={price} onChange={(e) => setPrice(e.target.value)} placeholder="السعر" className="form-control mb-3" required />
-        <input type="text" value={location} onChange={(e) => setLocation(e.target.value)} placeholder="الموقع" className="form-control mb-3" required />
-        <input type="file" onChange={(e) => setImage(e.target.files[0])} className="form-control mb-3" required />
-        <button type="submit" className="btn btn-primary">إضافة</button>
+        <div>
+          <label>عنوان العقار:</label><br />
+          <input value={title} onChange={e => setTitle(e.target.value)} required />
+        </div>
+        <div>
+          <label>الموقع:</label><br />
+          <input value={location} onChange={e => setLocation(e.target.value)} required />
+        </div>
+        <div>
+          <label>السعر ($):</label><br />
+          <input type="number" value={price} onChange={e => setPrice(e.target.value)} required />
+        </div>
+        <div>
+          <label>الوصف:</label><br />
+          <textarea value={description} onChange={e => setDescription(e.target.value)} required />
+        </div>
+        <button type="submit" style={{ marginTop: 10 }}>إضافة العقار</button>
       </form>
     </div>
   );

@@ -1,20 +1,20 @@
 import React, { useContext } from "react";
 import { Navigate } from "react-router-dom";
-import { UserContext } from "../firebase/context";
+import PropTypes from "prop-types";
+import { UserContext } from "../context/UserContext";
 
 const PrivateRoute = ({ children }) => {
-  const { authUser } = useContext(UserContext);
+  const { user, loading } = useContext(UserContext);
 
-  if (authUser === null) {
-    // تحميل أو تحقق من تسجيل الدخول
-    return <p className="text-center mt-5">جارٍ التحقق من تسجيل الدخول...</p>;
-  }
-
-  if (!authUser) {
-    return <Navigate to="/login" replace />;
-  }
+  if (loading) return <p>تحميل...</p>;
+  if (!user) return <Navigate to="/login" />;
 
   return children;
+};
+
+// تعريف PropTypes لتجنب تحذيرات ESLint
+PrivateRoute.propTypes = {
+  children: PropTypes.node.isRequired,
 };
 
 export default PrivateRoute;

@@ -9,6 +9,7 @@ import Account from "./pages/Account";
 import AdminDashboard from "./pages/AdminDashboard";
 import PrivateRoute from "./components/PrivateRoute";
 import AdminRoute from "./components/AdminRoute";
+import NotFound from "./pages/NotFound";
 
 const App = () => {
   return (
@@ -21,6 +22,7 @@ const App = () => {
         <Route path="/signup" element={<SignUp />} />
         <Route path="/account" element={<PrivateRoute><Account /></PrivateRoute>} />
         <Route path="/admin" element={<AdminRoute><AdminDashboard /></AdminRoute>} />
+        <Route path="*" element={<NotFound />} />
       </Routes>
     </Router>
   );

@@ -1,48 +1,35 @@
 import React, { useState } from "react";
-import { auth, db } from "../../firebase";
-import { useNavigate } from "react-router-dom";
+import { auth } from "../../firebase";
 
 const SignUp = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const navigate = useNavigate();
+  const [error, setError] = useState("");
 
-  const handleSignUp = async (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const userCredential = await auth.createUserWithEmailAndPassword(email, password);
-      await db.collection("users").doc(userCredential.user.uid).set({
-        email,
-        createdAt: new Date(),
-        admin: false, // يمكن تعيينه لاحقاً يدوياً من لوحة التحكم
-      });
-      navigate("/account");
-    } catch (error) {
-      alert("فشل إنشاء الحساب. حاول مرة أخرى.");
+      await auth.createUserWithEmailAndPassword(email, password);
+      alert("تم إنشاء الحساب بنجاح");
+    } catch (err) {
+      setError(err.message);
     }
   };
 
   return (
-    <div className="container mt-5">
+    <div style={{ padding: 20 }}>
       <h2>تسجيل جديد</h2>
-      <form onSubmit={handleSignUp}>
-        <input
-          type="email"
-          placeholder="البريد الإلكتروني"
-          className="form-control mb-3"
-          value={email}
-          onChange={(e) => setEmail(e.target.value)}
-          required
-        />
-        <input
-          type="password"
-          placeholder="كلمة المرور"
-          className="form-control mb-3"
-          value={password}
-          onChange={(e) => setPassword(e.target.value)}
-          required
-        />
-        <button type="submit" className="btn btn-success">تسجيل</button>
+      <form onSubmit={handleSubmit}>
+        <div>
+          <label>البريد الإلكتروني:</label><br />
+          <input type="email" value={email} onChange={e => setEmail(e.target.value)} required />
+        </div>
+        <div>
+          <label>كلمة المرور:</label><br />
+          <input type="password" value={password} onChange={e => setPassword(e.target.value)} required />
+        </div>
+        <button type="submit" style={{ marginTop: 10 }}>إنشاء حساب</button>
+        {error && <p style={{ color: "red" }}>{error}</p>}
       </form>
     </div>
   );
